@@ -2,8 +2,15 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
-import plotly.graph_objects as go
+import plotly
 import plotly.express as px
+import plotly.graph_objects as go
+from IPython.display import display,Image
+import plotly.graph_objects as go
+from kaleido.scopes.plotly import PlotlyScope
+import plotly.io as pio
+
+
 
 
 # Colores
@@ -18,7 +25,7 @@ COLAB_BKGROUND = '#383838'
 TRANSPARENT = '#00000000'
 
 
-def boxplot(dataset, title):
+def boxplot(dataset, title, render="colab", filename='figure.png'):
     fig = go.Figure()
     fig.add_trace(go.Box(x=dataset,
                          name=str(title),
@@ -51,8 +58,13 @@ def boxplot(dataset, title):
                           font_size=14,
                           font_family="verdana")
                       )
-    fig.show()
-
+    if render == 'png':
+        scope = PlotlyScope()
+        with open(filename, "wb") as f:
+            f.write(scope.transform(fig, format="png"))
+        display(Image(filename=filename))
+    else:
+        fig.show()
 
 def plot_dot_line(dot_x, dox_y, y_hat, title="Precio por m2", y_label="Precio [miles de pesos]", x_label='m2', legend_x='Predicción', legend_y='Precio publicado'):
     '''Graficador de tendencia'''
@@ -77,7 +89,7 @@ def plot_dot_line(dot_x, dox_y, y_hat, title="Precio por m2", y_label="Precio [m
     plt.legend((legend_x, legend_y), prop={'size': 15})
 
 
-def plot_meter(value, reference=10):
+def plot_meter(value, reference=10, render="colab", filename='figure.png',title='Error medio'):
     '''Medidor tipo `barra horizontal` de una sola magnitud'''
     fig = go.Figure(go.Indicator(
         mode="number+gauge+delta",
@@ -88,7 +100,7 @@ def plot_meter(value, reference=10):
         value=value,
         delta={'reference': reference},
         domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': "<b style = 'color: "+ORANGE+";'>Error medio</b>",
+        title={'text': "<b style = 'color: "+ORANGE+";'>"+ title +"</b>",
                'font': {"size": 18}}))
     fig.update_layout(height=50,
                       paper_bgcolor=COLAB_BKGROUND,
@@ -96,4 +108,12 @@ def plot_meter(value, reference=10):
                       margin={'l': 150,
                               't': 0,
                               'b': 0})
-    fig.show()
+    if render == 'png':
+        scope = PlotlyScope()
+        with open(filename, "wb") as f:
+            f.write(scope.transform(fig, format="png"))
+        display(Image(filename=filename))
+    else:
+        fig.show()
+
+
