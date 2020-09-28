@@ -116,4 +116,27 @@ def plot_meter(value, reference=10, render="colab", filename='figure.png',title=
     else:
         fig.show()
 
+def inove_barh(x=[], y=[], tittle='Titulo', xlabel='título eje x', ylabel='título eje y'):
+    '''Función de recibe dos `listas []` con parámetros para ejes `x` e `y`,
+     y devuelve un grafico de tipo barras horizontal con colores seteados para colab dark'''
+    mpl.rcParams['text.color'] = ORANGE
+    mpl.rcParams['axes.labelcolor'] = ORANGE
+    mpl.rcParams['xtick.color'] = ORANGE
+    mpl.rcParams['ytick.color'] = ORANGE
+    mpl.rcParams["legend.facecolor"] = PLOT_BKGROUND + 'aa'
+    fig, ax = plt.subplots()
+    fig.patch.set_facecolor(TRANSPARENT)
+    #Colocamos una etiqueta en el eje Y
+    ax.set_ylabel(ylabel,fontsize=14 )
+    #Colocamos una etiqueta en el eje X
+    ax.set_xlabel(xlabel,fontsize=14)
+    ax.set_title(tittle, fontsize=18)
+    [ax.annotate(f'| {x[i]:.02f}',xy=(10, i), weight='bold',color=L_YELOW,verticalalignment='center') for i in range(len(y))]
+    #Creamos la grafica de barras.
+    plt.barh(y, x, align='center', alpha=0.5, color=L_GREEN)
+    ax.set_facecolor(PLOT_BKGROUND + 'aa')
+    plt.savefig(tittle + '.png')
+    #Finalmente mostramos la grafica con el metodo show()
+    plt.show()
+
 
