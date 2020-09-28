@@ -5,12 +5,10 @@ import seaborn as sns
 import plotly
 import plotly.express as px
 import plotly.graph_objects as go
-from IPython.display import display,Image
+from IPython.display import display, Image
 import plotly.graph_objects as go
 from kaleido.scopes.plotly import PlotlyScope
 import plotly.io as pio
-
-
 
 
 # Colores
@@ -19,6 +17,7 @@ L_BLUE_DOTS = '#00a5ff'
 L_BLUE_BOX = '#00a2a5'
 L_YELOW = '#ffffa5'
 L_GREEN = '#9ade00'
+L_RED = '#e52d2dff'
 BLACK_GRID = '#2f2933'
 PLOT_BKGROUND = '#364e59'
 COLAB_BKGROUND = '#383838'
@@ -66,6 +65,7 @@ def boxplot(dataset, title, render="colab", filename='figure.png'):
     else:
         fig.show()
 
+
 def plot_dot_line(dot_x, dox_y, y_hat, title="Precio por m2", y_label="Precio [miles de pesos]", x_label='m2', legend_x='Predicción', legend_y='Precio publicado'):
     '''Graficador de tendencia'''
     # Inicializamos el gráfico
@@ -89,7 +89,7 @@ def plot_dot_line(dot_x, dox_y, y_hat, title="Precio por m2", y_label="Precio [m
     plt.legend((legend_x, legend_y), prop={'size': 15})
 
 
-def plot_meter(value, reference=10, render="colab", filename='figure.png',title='Error medio'):
+def plot_meter(value, reference=10, render="colab", filename='figure.png', title='Error medio'):
     '''Medidor tipo `barra horizontal` de una sola magnitud'''
     fig = go.Figure(go.Indicator(
         mode="number+gauge+delta",
@@ -100,7 +100,7 @@ def plot_meter(value, reference=10, render="colab", filename='figure.png',title=
         value=value,
         delta={'reference': reference},
         domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': "<b style = 'color: "+ORANGE+";'>"+ title +"</b>",
+        title={'text': "<b style = 'color: "+ORANGE+";'>" + title + "</b>",
                'font': {"size": 18}}))
     fig.update_layout(height=50,
                       paper_bgcolor=COLAB_BKGROUND,
@@ -116,6 +116,7 @@ def plot_meter(value, reference=10, render="colab", filename='figure.png',title=
     else:
         fig.show()
 
+
 def inove_barh(x=[], y=[], tittle='Titulo', xlabel='título eje x', ylabel='título eje y'):
     '''Función de recibe dos `listas []` con parámetros para ejes `x` e `y`,
      y devuelve un grafico de tipo barras horizontal con colores seteados para colab dark'''
@@ -127,16 +128,15 @@ def inove_barh(x=[], y=[], tittle='Titulo', xlabel='título eje x', ylabel='tít
     fig, ax = plt.subplots()
     fig.patch.set_facecolor(TRANSPARENT)
     #Colocamos una etiqueta en el eje Y
-    ax.set_ylabel(ylabel,fontsize=14 )
+    ax.set_ylabel(ylabel, fontsize=14)
     #Colocamos una etiqueta en el eje X
-    ax.set_xlabel(xlabel,fontsize=14)
+    ax.set_xlabel(xlabel, fontsize=14)
     ax.set_title(tittle, fontsize=18)
-    [ax.annotate(f'| {x[i]:.02f}',xy=(10, i), weight='bold',color=L_YELOW,verticalalignment='center') for i in range(len(y))]
+    [ax.annotate(f'| {x[i]:.02f}', xy=(10, i), weight='bold',
+                 color=L_YELOW, verticalalignment='center') for i in range(len(y))]
     #Creamos la grafica de barras.
     plt.barh(y, x, align='center', alpha=0.5, color=L_GREEN)
     ax.set_facecolor(PLOT_BKGROUND + 'aa')
     plt.savefig(tittle + '.png')
     #Finalmente mostramos la grafica con el metodo show()
     plt.show()
-
-
